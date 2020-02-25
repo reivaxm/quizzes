@@ -303,7 +303,7 @@ class User implements ControllerProviderInterface
             $sMailTo = 'gaubry@hi-media.com';
             $sHTML = "<html><body>" . $aQuizStats['title'] . "</body></html>";
             $sCmd = sprintf($aMuttCfg['mutt_cmd'], $aMuttCfg['mutt_cfg'], $sMailSubject, $sMailTo, $sHTML);
-            \GAubry\Helpers\Helpers::exec($sCmd);
+            // \GAubry\Helpers\Helpers::exec($sCmd);
         }
 
         $response = $app['twig']->render('quiz-in-progress.twig', array(
