@@ -1430,7 +1430,6 @@
 
     ],
     "platform": {
-        "ext-mcrypt": "*",
         "php": ">=5.3.3"
     },
     "platform-dev": [

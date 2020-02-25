@@ -11,7 +11,6 @@
         }
     ],
     "require": {
-        "ext-mcrypt":                  "*",
         "geoffroy-aubry/errorhandler": "1.*",
         "geoffroy-aubry/helpers":      "1.*",
         "php":                 ">=5.3.3",
