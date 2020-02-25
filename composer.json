@@ -8,10 +8,13 @@
         {
             "name":  "Geoffroy Aubry",
             "email": "gaubry@hi-media.com"
+        },
+        {
+            "name": "Xavier Mortelette",
+            "email": "xavier.mortelette@pragmitil.com"
         }
     ],
     "require": {
-        "ext-mcrypt":                  "*",
         "geoffroy-aubry/errorhandler": "1.*",
         "geoffroy-aubry/helpers":      "1.*",
         "php":                 ">=5.3.3",

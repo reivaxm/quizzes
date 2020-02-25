@@ -209,7 +209,7 @@ class User implements ControllerProviderInterface
         }
 
         $form = $app['form.factory']
-            ->createBuilder('form', null, array('csrf_protection' => true, 'intention' => 'quiz-in-progress'))
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', null, array('csrf_protection' => true, 'intention' => 'quiz-in-progress'))
             ->add('choices', 'choice', array(
                 'choices' => $aQuestionChoices,
                 'multiple' => true,
@@ -329,7 +329,7 @@ class User implements ControllerProviderInterface
     private function handleNeedCandidateState (Application $app, Request $request)
     {
         $form = $app['form.factory']
-            ->createBuilder('form', null, array('csrf_protection' => true, 'intention' => 'need-candidate'))
+            ->createBuilder('form', null, array('csrf_protection' => true, 'csrf_token_id' => 'need-candidate'))
             ->add('firstname', 'text', array(
                 'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 2))),
                 'label' => 'Votre prénom :',
@@ -383,9 +383,9 @@ class User implements ControllerProviderInterface
         $aQuizzes = Quiz::getAllQuizzes($app['config']['Himedia\QCM']['dir']['quizzes']);
         $aObfuscatedQuizzes = Obfuscator::obfuscateKeys($aQuizzes, $app['session']->get('seed'));
         $form = $app['form.factory']
-            ->createBuilder('form', null, array('csrf_protection' => true, 'intention' => 'need-quiz'))
-            ->add('quizzes', 'choice', array(
-                'choices' => array_fill_keys(array_keys($aObfuscatedQuizzes), true),
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', null, array('csrf_protection' => true, 'csrf_token_id' => 'need-quiz'))
+            ->add('quizzes', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
+                'choices' => array_fill_keys(array_keys($aObfuscatedQuizzes), false),
                 'multiple' => false,
                 'expanded' => true
             ))

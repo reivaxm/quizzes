@@ -106,22 +106,21 @@ class Tools
     }
 
     public static function simpleEncrypt ($text, $salt) {
-        return trim(base64_encode(mcrypt_encrypt(
-            MCRYPT_RIJNDAEL_256,
-            $salt,
-            $text,
-            MCRYPT_MODE_ECB,
-            mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND)
-        )));
+        $ivlen = openssl_cipher_iv_length($cipher="AES-128-CBC");
+        $iv = openssl_random_pseudo_bytes($ivlen);
+        $ciphertext_raw = openssl_encrypt($text, $cipher, $salt, $options=OPENSSL_RAW_DATA, $iv);
+        $hmac = hash_hmac('sha256', $ciphertext_raw, $salt, $as_binary=true);
+        $ciphertext = base64_encode( $iv.$hmac.$ciphertext_raw );
+        return trim($ciphertext);
     }
 
     public static function simpleDecrypt ($text, $salt) {
-        return trim(mcrypt_decrypt(
-            MCRYPT_RIJNDAEL_256,
-            $salt,
-            base64_decode($text),
-            MCRYPT_MODE_ECB,
-            mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND)
-        ));
+        $c = base64_decode($text);
+        $ivlen = openssl_cipher_iv_length($cipher="AES-128-CBC");
+        $iv = substr($c, 0, $ivlen);
+        $hmac = substr($c, $ivlen, $sha2len=32);
+        $ciphertext_raw = substr($c, $ivlen+$sha2len);
+        $original_plaintext = openssl_decrypt($ciphertext_raw, $cipher, $salt, $options=OPENSSL_RAW_DATA, $iv);
+        return trim($original_plaintext);
     }
 }
